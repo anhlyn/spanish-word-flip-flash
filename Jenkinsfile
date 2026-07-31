@@ -18,9 +18,31 @@ pipeline{
                 '''
             }
         }
-        stage('This is stage 02'){
+        stage('Start Server'){
+            agent{
+                docker{
+                    image 'node:22-alpine'
+                    reuseNode true
+                }
+            }
             steps{
-                sh 'echo "STAGE 02 HERE"'
+                sh '''
+                    npm run dev &
+                    echo "Waiting for server startup..."
+                    # Dùng Node.js để kiểm tra kết nối tới port 8080 liên tục cho đến khi thành công
+                    node -e '
+                    const http = require("http");
+                    const check = () => {
+                        http.get("http://localhost:8080", (res) => {
+                        process.exit(0);
+                        }).on("error", () => {
+                        setTimeout(check, 2000);
+                        });
+                    };
+                    check();
+                    '
+                    echo "Server is ready!"
+                '''
             }
         }
     }
