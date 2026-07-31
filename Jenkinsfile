@@ -76,7 +76,8 @@ pipeline{
                     publishHTML(target:[
                         reportName: 'Report - E2E Testing',
                         reportDir: 'reports-e2e/html',
-                        reportFiles: 'index.html'
+                        reportFiles: 'index.html',
+                        allowMissing: false
                     ])
                 }
             }
