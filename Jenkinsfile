@@ -66,7 +66,7 @@ pipeline{
             }
             steps{
                 sh '''
-                    npx playwright install
+                    npx playwright install --with-deps
                     npm run test:e2e
                 '''
             }
