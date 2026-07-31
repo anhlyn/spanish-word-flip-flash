@@ -57,5 +57,28 @@ pipeline{
                 '''
             }
         }
+        stage('Run E2E Test'){
+            agent{
+                docker{
+                    image 'node:22-alpine'
+                    reuseNode true
+                }
+            }
+            steps{
+                sh '''
+                    npm run test:e2e
+                '''
+            }
+            post{
+                always{
+                    junit 'reports-e2e/junit.xml'
+                    publishHTML(target:[
+                        reportName: 'Report - E2E Testing',
+                        reportDir: 'reports-e2e/html',
+                        reportFiles: 'index.html'
+                    ])
+                }
+            }
+        }
     }
 }
