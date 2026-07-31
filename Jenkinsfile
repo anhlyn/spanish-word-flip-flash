@@ -11,7 +11,7 @@ pipeline{
             steps{
                 sh '''
                     npm ci
-                    npm run dev
+                    npm run dev &
                     echo "Waiting for server startup..."
                     until curl -I http://localhost:8080; do
                     sleep 2
