@@ -2,25 +2,47 @@ pipeline{
     agent any
     stages{
         stage('Build'){
+            agent{
+                docker{
+                    image 'node:22-alpine'
+                    reuseNode true
+                }
+            }
             steps{
                 sh '''
-                    echo "This is stage Build"
+                    npm ci
+                    npm run build
+                    if test -d "duong/dan/thu/muc"; then
+                        echo "Yes"
+                    fi
                 '''
             }
         }
         stage('parallel stages'){
             parallel{
                 stage('Unit Test'){
+                    agent{
+                        docker{
+                            image 'node:22-alpine'
+                            reuseNode true
+                        }
+                    }
                     steps{
                         sh '''
-                            echo "This is stage Unit Test"
+                            npm run test:unit
                         '''
                     }
                 }
                 stage('Integration Test'){
+                    agent{
+                        docker{
+                            image 'mcr.microsoft.com/playwright:v1.54.2-noble'
+                            reuseNode true
+                        }
+                    }
                     steps{
                         sh '''
-                            echo "This is stage Integration Test"
+                            npx playwright test
                         '''
                     }
                 }
