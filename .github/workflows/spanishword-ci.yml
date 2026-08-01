@@ -61,6 +61,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
      image: mcr.microsoft.com/playwright:v1.54.2-noble
+     options: --user 1001
     needs: MockDeployment
     steps:
     - uses: actions/checkout@v6
