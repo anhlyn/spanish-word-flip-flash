@@ -9,8 +9,8 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
+    - uses: actions/checkout@v6
+    - uses: actions/setup-node@v6
       with:
         node-version: lts/*
     - name: Install dependencies
@@ -21,8 +21,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: Build
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
+    - uses: actions/checkout@v6
+    - uses: actions/setup-node@v6
       with:
         node-version: lts/*
     - name: Install dependencies
@@ -33,8 +33,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: Build
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
+    - uses: actions/checkout@v6
+    - uses: actions/setup-node@v6
       with:
         node-version: lts/*
     - name: npm ci
@@ -45,7 +45,7 @@ jobs:
       run: npx playwright test
     - uses: actions/upload-artifact@v4
       with:
-        name: Report e2e test
+        name: Report e2e on job integration test
         path: reports-e2e/html
   MockDeployment:
     runs-on: ubuntu-latest
@@ -57,10 +57,12 @@ jobs:
     runs-on: ubuntu-latest
     needs: MockDeployment
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
+    - uses: actions/checkout@v6
+    - uses: actions/setup-node@v6
     - name: npm ci
       run: npm ci
+    - name: Install browsers and its dependencies
+      run: npx playwright install --with-deps
     - name: Echo website host
       run: echo "$E2E_BASE_URL"
     - name: run e2e test
