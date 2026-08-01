@@ -1,0 +1,17 @@
+name: Spanish word ci
+on:
+  push:
+    branches: [ main ]
+jobs:
+  Build:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v6
+    - uses: actions/setup-node@v6
+      with:
+        node-version: lts/*
+    - name: Install dependencies
+      run: npm ci
+    - name: Build the app
+      run: npm run build
