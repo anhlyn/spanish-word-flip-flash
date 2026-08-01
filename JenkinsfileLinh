@@ -1,42 +1,44 @@
 pipeline{
     agent any
-    stage('Build'){
-        steps{
-            sh '''
-                echo "This is stage Build"
-            '''
-        }
-    }
-    stages('parallel stages'){
-        parallel{
-            stage('Unit Test'){
-                steps{
-                    sh '''
-                        echo "This is stage Unit Test"
-                    '''
-                }
-            }
-            stage('Integration Test'){
-                steps{
-                    sh '''
-                        echo "This is stage Integration Test"
-                    '''
-                }
+    stages{
+        stage('Build'){
+            steps{
+                sh '''
+                    echo "This is stage Build"
+                '''
             }
         }
-    }
-    stage('Mock Deployment'){
-        steps{
-            sh '''
-                echo "This is mock deployment"
-            '''
+        stages('parallel stages'){
+            parallel{
+                stage('Unit Test'){
+                    steps{
+                        sh '''
+                            echo "This is stage Unit Test"
+                        '''
+                    }
+                }
+                stage('Integration Test'){
+                    steps{
+                        sh '''
+                            echo "This is stage Integration Test"
+                        '''
+                    }
+                }
+            }
         }
-    }
-    stage('E2E Test'){
-        steps{
-            sh '''
-                echo "This is E2E Test"
-            '''
+        stage('Mock Deployment'){
+            steps{
+                sh '''
+                    echo "This is mock deployment"
+                '''
+            }
+        }
+        stage('E2E Test'){
+            steps{
+                sh '''
+                    echo "This is E2E Test"
+                '''
+            }
         }
     }
 }
